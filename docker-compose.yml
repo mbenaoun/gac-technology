@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+    db:
+        image: mysql
+        ports:
+            - 3306:3306
+        volumes:
+            - "./.data/db:/var/lib/mysql"
+        environment:
+            MYSQL_ROOT_PASSWORD: rootPwd
+            MYSQL_DATABASE: testgac
+            MYSQL_USER: testGacUsr
+            MYSQL_PASSWORD: testGacMdp
+    php:
+        build:
+            context: .
+            dockerfile: docker/php/Dockerfile
+        links:
+            - db:mysqldb
+        volumes:
+            - .:/var/www/
+    nginx:
+        build:
+            context: .
+            dockerfile: docker/nginx/Dockerfile
+        links:
+            - php
+        volumes:
+            - .:/var/www/
+        ports:
+            - 80:80
