@@ -12,8 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * Class AnalyseDataCommand
- * @package App\Command
+ * Class AnalyseDataCommand.
  */
 class AnalyseDataCommand extends Command
 {
@@ -24,6 +23,7 @@ class AnalyseDataCommand extends Command
 
     /**
      * AnalyseDataCommand constructor.
+     *
      * @param ManagerRegistry $doctrine
      */
     public function __construct(ManagerRegistry $doctrine)
@@ -39,10 +39,12 @@ class AnalyseDataCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @return int
+     *
      * @throws NonUniqueResultException
+     *
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -72,8 +74,8 @@ class AnalyseDataCommand extends Command
         if (is_array($topTenBilled) && count($topTenBilled) > 0) {
             $top = 1;
             foreach ($topTenBilled as $data) {
-                $io->success('TOP '. $top .' : Billed (' . $data['totalBilledVolume'] . ') & Id Subscriber (' . $data['idSubscriber'] . ')');
-                $top++;
+                $io->success('TOP ' . $top . ' : Billed (' . $data['totalBilledVolume'] . ') & Id Subscriber (' . $data['idSubscriber'] . ')');
+                ++$top;
             }
         } else {
             $io->error('No Top Ten BilledVolume found');

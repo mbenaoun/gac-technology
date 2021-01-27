@@ -115,3 +115,21 @@ or
 ```
 sf a:d
 ```
+## Utils
+
+### PhpCsFixer
+
+- Connection API Container or Terminal local in your project (PHP 7.4 required)
+
+```
+docker exec -it gac-technology_php_1 bash
+```
+- Launch PhpCsFixer to fix code (rules define in .php_cs.dist)
+```
+php vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --no-interaction
+```
+
+- Keyboard shortcut to launch PhpCsFixer since your IDE
+
+1) Create external tools in your IDE (preferences / tools / external tools)
+2) Create Keyboard shortcut in your IDE (preferences / keymap)

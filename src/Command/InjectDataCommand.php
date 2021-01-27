@@ -13,8 +13,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Class InjectDataCommand
- * @package App\Command
+ * Class InjectDataCommand.
  */
 class InjectDataCommand extends Command
 {
@@ -31,8 +30,9 @@ class InjectDataCommand extends Command
 
     /**
      * InjectDataCommand constructor.
-     * @param string $rootDir
-     * @param ManagerRegistry $doctrine
+     *
+     * @param string             $rootDir
+     * @param ManagerRegistry    $doctrine
      * @param ValidatorInterface $validator
      */
     public function __construct(string $rootDir, ManagerRegistry $doctrine, ValidatorInterface $validator)
@@ -50,8 +50,9 @@ class InjectDataCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -61,26 +62,26 @@ class InjectDataCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         if (file_exists($this->csvFullPath)) {
-            if(($handle = fopen($this->csvFullPath, "r")) !== FALSE)
-            {
+            if (($handle = fopen($this->csvFullPath, 'r')) !== false) {
                 $line = 0;
-                while(($rows = fgetcsv($handle, 1000, ';', '"')) !== FALSE) {
-                    $line++;
-                    if ($line >= 4 && count($rows) === 8) {
+                while (($rows = fgetcsv($handle, 1000, ';', '"')) !== false) {
+                    ++$line;
+                    if ($line >= 4 && 8 === count($rows)) {
                         if (
-                            !preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", DateTime::createFromFormat("d/m/Y", $rows[3])->format("Y-m-d"))
+                            !preg_match('/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/', DateTime::createFromFormat('d/m/Y', $rows[3])->format('Y-m-d'))
                             || !preg_match('#^([01][0-9])|(2[0-4])(:[0-5][0-9]){1,2}$#', $rows[4])
                         ) {
                             $io->error('Wrong data in line N°' . $line);
+
                             continue;
                         }
                         $callDetails = new CallDetails();
-                        $callDetails->accountBilling = (int)$rows[0];
-                        $callDetails->idBilling = (int)$rows[1];
-                        $callDetails->idSubscriber = (int)$rows[2];
+                        $callDetails->accountBilling = (int) $rows[0];
+                        $callDetails->idBilling = (int) $rows[1];
+                        $callDetails->idSubscriber = (int) $rows[2];
 
-                        $callDetails->date = DateTime::createFromFormat("d/m/Y", $rows[3]);
-                        $callDetails->time = DateTime::createFromFormat("H:i:s", $rows[4]);
+                        $callDetails->date = DateTime::createFromFormat('d/m/Y', $rows[3]);
+                        $callDetails->time = DateTime::createFromFormat('H:i:s', $rows[4]);
                         $callDetails->actualVolume = $rows[5];
                         $callDetails->billedVolume = $rows[6];
                         $callDetails->type = utf8_encode($rows[7]);
@@ -89,6 +90,7 @@ class InjectDataCommand extends Command
 
                         if (count($errors) > 0) {
                             $io->error('Wrong data in line N°' . $line);
+
                             continue;
                         }
 

@@ -8,8 +8,8 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method CallDetails|null find($id, $lockMode = null, $lockVersion = null)
- * @method CallDetails|null findOneBy(array $criteria, array $orderBy = null)
+ * @method null|CallDetails find($id, $lockMode = null, $lockVersion = null)
+ * @method null|CallDetails findOneBy(array $criteria, array $orderBy = null)
  * @method CallDetails[]    findAll()
  * @method CallDetails[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
@@ -22,8 +22,10 @@ class CallDetailsRepository extends ServiceEntityRepository
 
     /**
      * @param string $dateBegin
-     * @return mixed|null
+     *
      * @throws NonUniqueResultException
+     *
+     * @return null|mixed
      */
     public function getTotalTimeCalls(string $dateBegin)
     {
@@ -34,12 +36,14 @@ class CallDetailsRepository extends ServiceEntityRepository
             ->setParameter('dateBegin', $dateBegin)
             ->setParameter('typeWhere', '%appel%')
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
     }
 
     /**
-     * @return mixed|null
      * @throws NonUniqueResultException
+     *
+     * @return null|mixed
      */
     public function getTotalSmsSent()
     {
@@ -48,7 +52,8 @@ class CallDetailsRepository extends ServiceEntityRepository
             ->select('COUNT(c.id) AS totalSms')
             ->setParameter('typeWhere', '%sms%')
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
     }
 
     /**
@@ -67,6 +72,7 @@ class CallDetailsRepository extends ServiceEntityRepository
             ->setParameter('timeEnd', '18:00:00')
             ->setParameter('typeWhere', '%connexion%')
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 }

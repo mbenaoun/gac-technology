@@ -5,9 +5,21 @@ $finder = PhpCsFixer\Finder::create()
     ->exclude('var')
 ;
 
+/**
+ * Ensemble des règles automatiques
+ * @see https://cs.symfony.com/
+ * @see https://mlocati.github.io/php-cs-fixer-configurator/#version:2.16|fixer:ordered_class_elements
+ */
 return PhpCsFixer\Config::create()
-    ->setRules([
-        '@Symfony' => true,
-    ])
-    ->setFinder($finder)
-;
+    ->setRules(
+        [
+            '@Symfony' => true,
+            '@PhpCsFixer' => true,
+            'array_syntax' => ['syntax' => 'short'],
+            'align_multiline_comment' => true,
+            'concat_space' => ['spacing' => 'one'],
+            'no_superfluous_phpdoc_tags' => false,
+            'ordered_class_elements' => false,
+        ]
+    )
+    ->setFinder($finder);
